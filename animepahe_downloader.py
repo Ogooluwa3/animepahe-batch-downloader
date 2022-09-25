@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as condition
 
 
-os.environ['PATH'] += r"C:/Users/DELL/Downloads/webdriver"
+os.environ['PATH'] += os.getcwd()+"/webdriver"
 default_path = os.getcwd() + "\\Downloads"
 
 
