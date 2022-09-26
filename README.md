@@ -2,8 +2,8 @@
 animepahe-downloader is a python program that gets the download links and downloads animes from the [animepahe.com](https://animepahe.com) website.
 
 ## Requirements:
-python3  
-chromedriver web browser  
+Python3  
+Chromedriver web browser  
 BeautifulSoup4  
 Selenium  
 
@@ -29,13 +29,13 @@ When promted, enter the link of the anime you want to download.
 ![This in an image](https://github.com/Ogooluwa3/animepahe-downloader/blob/master/Screenshots/1.png)
 
 Enter a path to download the anime to. If the path does not exist, or a path is not provided, the program will use the default path.  
-Default path is in the **Downloads** folder in the same directory as animepahe_downloader.py. The program will create folder if one does not exist.
+Default path is in the **Downloads** folder in the same directory as animepahe_downloader.py. The program will create the folder if one does not exist.
 
 ![This in an image](https://github.com/Ogooluwa3/animepahe-downloader/blob/master/Screenshots/2.png)
 
 From the list of episodes select how many episodes of the anime you want to download:  
-- ``` -r x,y ``` downloads all episodes in a range from x to y (x and y inclusive)  
-- ``` -l a,b,c,d,... ``` downloads episodes a, b, c, d,...  
+- ``` -r 3,6 ``` downloads all episodes from 3 to 6 (3 and 6 inclusive)  
+- ``` -l 3,5,7,12 ``` downloads episodes 3, 5, 7, 12  
 - ``` -a ``` downloads all episodes of the anime  
 
 ![This in an image](https://github.com/Ogooluwa3/animepahe-downloader/blob/master/Screenshots/3.png)
