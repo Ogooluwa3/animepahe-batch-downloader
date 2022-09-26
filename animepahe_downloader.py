@@ -28,7 +28,7 @@ if download_path.strip() != "" and os.path.exists(download_path) == True:
      # chrome_options.headless = True
      prefs = {'download.default_directory' : download_path}
      chrome_options.add_experimental_option('prefs', prefs)
-     browser = webdriver.Chrome(chrome_options=chrome_options)
+     browser = webdriver.Chrome(options=chrome_options)
 else:
      try:
           os.mkdir(default_path)
@@ -43,8 +43,7 @@ else:
      # chrome_options.headless = True
      prefs = {'download.default_directory' : default_path}
      chrome_options.add_experimental_option('prefs', prefs)
-     browser = webdriver.Chrome(chrome_options=chrome_options)
-     # browser = webdriver.Chrome()
+     browser = webdriver.Chrome(options=chrome_options)
 
 
 def get_episode_list(anime_link):
@@ -116,8 +115,7 @@ def get_redirect_link(anime_link):
           condition.presence_of_all_elements_located((By.CSS_SELECTOR, "#pickDownload .dropdown-item")),
           condition.element_attribute_to_include((By.CSS_SELECTOR, "#pickDownload a.dropdown-item"), "href"),
           
-          condition.none_of(condition.presence_of_all_elements_located((By.CSS_SELECTOR, "#pickDownload .disabled")),
-                         # condition.text_to_be_present_in_element((By.CSS_SELECTOR, "#pickDownload .dropdown-item"), "")
+          condition.none_of(condition.presence_of_all_elements_located((By.CSS_SELECTOR, "#pickDownload .disabled"))
      )))
 
      while download_link_quality == [] :
@@ -182,10 +180,6 @@ def download_anime(download_link):
      download_link = browser.get(download_link)
      browser.implicitly_wait(10)
      download_link = browser.page_source
-
-     # WebDriverWait(browser, 100).until(
-     #      condition.element_to_be_clickable((By.CSS_SELECTOR, "button.button"))
-     # )
 
      download_button = browser.find_element(By.CSS_SELECTOR, "button.button")
      download_button.submit()
@@ -252,9 +246,6 @@ def get_total_size(size_list:list):
      return total_mb
 
 
-# browser.quit()
-
-
 anime_name, episodes = get_episode_list(anime_link)
 
 download_mode_input = """How would you like to download episodes? Enter:
@@ -299,7 +290,7 @@ while True:
                     size, download_quality = get_anime_size(download_size, download_link)
                     
                total_download_size = get_total_size(download_size_list)
-               print(f"Total download : {total_download_size} mb")
+               print(f"Total download size : {total_download_size} mb")
                break
 
           case "-a":
@@ -309,7 +300,7 @@ while True:
                     size, download_quality = get_anime_size(download_size, download_link)
                     
                total_download_size = get_total_size(download_size_list)
-               print(f"Total download : {total_download_size} mb")
+               print(f"Total download size : {total_download_size} mb")
                break
 
           case default:
@@ -349,7 +340,7 @@ def wait(path):
 
           files.sort(key=os.path.getmtime)
           files.reverse()
-          print(files)
+          print(files[:len(episode_list)])
           for file in files[:len(episode_list)]:
                if file.endswith('.crdownload'):
                     downloading_files.append(file)
