@@ -299,7 +299,7 @@ while True:
                     size, download_quality = get_anime_size(download_size, download_link)
                     
                total_download_size = get_total_size(download_size_list)
-               print(f"Total download : {total_download_size}")
+               print(f"Total download : {total_download_size} mb")
                break
 
           case "-a":
@@ -309,7 +309,7 @@ while True:
                     size, download_quality = get_anime_size(download_size, download_link)
                     
                total_download_size = get_total_size(download_size_list)
-               print(f"Total download : {total_download_size}")
+               print(f"Total download : {total_download_size} mb")
                break
 
           case default:
@@ -359,7 +359,7 @@ def wait(path):
 
           if downloading_files == []:
                wait = False
-     print("Download complete :)")
+     print("\nDownload complete :)")
      time.sleep(10)
      browser.quit()
 
