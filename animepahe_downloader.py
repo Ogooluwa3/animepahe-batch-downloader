@@ -50,6 +50,11 @@ else:
 def get_episode_list(anime_link):
      """ Returns anime name and dictionary of anime episodes and respective links """
      
+     if anime_link.startswith("https://"):
+          pass
+     else:
+          anime_link = "https://" + anime_link
+     
      anime_link = browser.get(anime_link)
      browser.implicitly_wait(10)
      anime_link = browser.page_source
@@ -106,7 +111,7 @@ def get_redirect_link(anime_link):
      download_link_quality = []
      download_link_size = []
 
-     WebDriverWait(browser, 30).until(
+     WebDriverWait(browser, 100).until(
           condition.all_of(
           condition.presence_of_all_elements_located((By.CSS_SELECTOR, "#pickDownload .dropdown-item")),
           condition.element_attribute_to_include((By.CSS_SELECTOR, "#pickDownload a.dropdown-item"), "href"),
@@ -117,7 +122,7 @@ def get_redirect_link(anime_link):
 
      while download_link_quality == [] :
 
-          WebDriverWait(browser, 30).until(
+          WebDriverWait(browser, 100).until(
                condition.all_of(
                condition.presence_of_all_elements_located((By.CSS_SELECTOR, "#pickDownload .dropdown-item")),
                condition.element_attribute_to_include((By.CSS_SELECTOR, "#pickDownload a.dropdown-item"), "href"),
@@ -125,9 +130,9 @@ def get_redirect_link(anime_link):
                condition.none_of(condition.presence_of_all_elements_located((By.CSS_SELECTOR, "#pickDownload .disabled")),
                               # condition.text_to_be_present_in_element((By.CSS_SELECTOR, "#pickDownload .dropdown-item"), "")
           )))   
-          time.sleep(1)
+          
           for link in anime_soup.find(id="pickDownload").find_all("a", class_="dropdown-item"):
-               WebDriverWait(browser, 30).until(
+               WebDriverWait(browser, 100).until(
                     condition.all_of(
                     condition.presence_of_all_elements_located((By.CSS_SELECTOR, "#pickDownload .dropdown-item span")),
                     condition.none_of(condition.presence_of_all_elements_located((By.CSS_SELECTOR, "#pickDownload .disabled")))
@@ -145,7 +150,6 @@ def get_redirect_link(anime_link):
                     download_link_size.append(size)
                     download_link_quality.append(quality)
                     download_link_list.append(link.get("href"))
-          # break
 
      download_link = dict(zip(download_link_quality, download_link_list))
      download_size = dict(zip(download_link_quality, download_link_size))
@@ -161,7 +165,7 @@ def get_download_link(anime_link):
      anime_link = browser.page_source
      anime_soup = BeautifulSoup(anime_link, "html.parser")
 
-     WebDriverWait(browser, 10).until(
+     WebDriverWait(browser, 100).until(
           condition.all_of(
           condition.text_to_be_present_in_element((By.CLASS_NAME, "redirect"), "Continue"),
           condition.none_of(condition.text_to_be_present_in_element_attribute((By.CLASS_NAME, "redirect"), "href", "#pleasewait"))
@@ -179,12 +183,12 @@ def download_anime(download_link):
      browser.implicitly_wait(10)
      download_link = browser.page_source
 
-     # WebDriverWait(browser, 10).until(
+     # WebDriverWait(browser, 100).until(
      #      condition.element_to_be_clickable((By.CSS_SELECTOR, "button.button"))
      # )
 
      download_button = browser.find_element(By.CSS_SELECTOR, "button.button")
-     return download_button.submit()
+     download_button.submit()
 
 
 def get_anime_size(download_size:dict, download_link:dict):
@@ -205,7 +209,7 @@ def get_anime_size(download_size:dict, download_link:dict):
           try:
                size = download_size[download_quality]
                link = download_link[download_quality]
-               print(f"File size : {size}")
+               print(f"File size : {size}\n")
                download_size_list.append(size)
                download_link_list.append(link)
                break
@@ -216,6 +220,7 @@ def get_anime_size(download_size:dict, download_link:dict):
 
 
 def get_total_size(size_list:list):
+     """ Returns the total size the episodes in mb """
      
      size_value = []
      size_number = []
@@ -243,6 +248,7 @@ def get_total_size(size_list:list):
 
      for m in mb:
           total_mb += m
+     
      return total_mb
 
 
@@ -256,7 +262,6 @@ download_mode_input = """How would you like to download episodes? Enter:
      \t -l -> to download in a list of episodes ( -l 1, 3, 6, 10, 12 )
      \t -a -> to download all the episodes ( -a )
 >> """
-time.sleep(5)
 
 while True:
      download_mode = input(download_mode_input).lower()
@@ -309,7 +314,7 @@ while True:
 
           case default:
                print("Something went wrong. Try again")
-               time.sleep(1)
+               time.sleep(2)
 
 
 
@@ -347,14 +352,14 @@ def wait(path):
           print(files)
           for file in files[:len(episode_list)]:
                if file.endswith('.crdownload'):
-                    #   print('Downloading files...')
                     downloading_files.append(file)
                     time.sleep(10)
                else:
                     pass
+
           if downloading_files == []:
                wait = False
-     print("Download complete")
+     print("Download complete :)")
      time.sleep(10)
      browser.quit()
 
